@@ -21,7 +21,9 @@ const decisionTable = (args, tableData) => {
   const context = null;
 
   return new Promise((resolve, reject) => {
-    execDTable(id, { context, inputExpressionList, inputValuesList, outputs, outputValues, ruleList, hitPolicy, defaultOutputValue }, args, (err, result) => {
+    execDTable(id, {
+      context, inputExpressionList, inputValuesList, outputs, outputValues, ruleList, hitPolicy, defaultOutputValue,
+    }, args, (err, result) => {
       if (err) {
         reject(err);
       } else {

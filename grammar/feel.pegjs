@@ -488,9 +488,9 @@ LeftExpd
 ComparisionOperator
     = "="
     / "!="
-    / $"<" !"="
+    / $("<" !"=")
     / "<="
-    / $">" !"="
+    / $(">" !"=")
     / ">="
 
 Comparision

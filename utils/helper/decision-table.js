@@ -25,7 +25,7 @@ const parseXLS = (path) => {
   return csv;
 };
 
-const getFormattedValue = str => str.replace(/\"{2,}/g, '\"').replace(/^\"|\"$/g, '');
+const getFormattedValue = (str) => str.replace(/\"{2,}/g, '\"').replace(/^\"|\"$/g, '');
 
 const parseContext = (csv) => {
   let context = {};
@@ -40,7 +40,7 @@ const parseContext = (csv) => {
       if (count > 0) {
         arr[1] = getFormattedValue(arr[1]);
       }
-      context[arr[0]] = arr[1];
+      [, context[arr[0]]] = arr;
     }
   }
   context = Object.keys(context).length > 0 ? JSON.stringify(context).replace(/"/g, '').replace(/\\/g, '"') : '';
@@ -99,7 +99,7 @@ const createDecisionTable = (commaSeparatedValue) => {
     }
   };
 
-  for (;i < csv.length; i += 1) {
+  for (; i < csv.length; i += 1) {
     const arr = csv[i].split(delimiter);
     if (arr[0] === 'RuleTable') {
       arr.forEach(conditionActionFilter);
@@ -109,7 +109,7 @@ const createDecisionTable = (commaSeparatedValue) => {
 
   i += 1;
   const classArr = csv[i].split(delimiter);
-  decisionTable.hitPolicy = classArr[0];
+  [decisionTable.hitPolicy] = classArr;
 
   // input and output classes
   classArr.slice(1).every((classValue, index) => {
@@ -245,7 +245,7 @@ const createDecisionTable = (commaSeparatedValue) => {
 // }
 
 const executeDecisionTable = (id, table, payload, cb) => {
-  const graphName = payload.graphName;
+  const { graphName } = payload;
   let rootMapId = id;
   if (graphName) {
     rootMapId = `${graphName}${id}`;
@@ -259,8 +259,8 @@ const executeDecisionTable = (id, table, payload, cb) => {
     }
   }
   tree.traverseTree(rootMap[rootMapId], payload)
-    .then(result => cb(null, result))
-    .catch(err => cb(err));
+    .then((result) => cb(null, result))
+    .catch((err) => cb(err));
 };
 
 module.exports = {

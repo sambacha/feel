@@ -24,7 +24,7 @@ function generatePriorityList(dTable) {
   const outputs = dTable.outputs && Array.isArray(dTable.outputs) ? dTable.outputs : [dTable.outputs];
   const outputValuesList = dTable.outputValues;
   // .map(outputValue => FEEL(outputValue));
-  const ruleList = dTable.ruleList;
+  const { ruleList } = dTable;
   const numOfConditions = dTable.inputExpressionList.length;
   const calcPriority = (priorityMat, outputs) => {
     const sortedPriority = _.sortBy(priorityMat, outputs);
@@ -55,11 +55,11 @@ function generatePriorityList(dTable) {
 
 const createDecisionTree = (dTable) => {
   const ruleTree = new Tree('Rule');
-  const root = ruleTree.root;
+  const { root } = ruleTree;
   const classNodeList = dTable.inputExpressionList;
   const numOfConditions = classNodeList.length;
   const outputNodeList = dTable.outputs && Array.isArray(dTable.outputs) ? dTable.outputs : [dTable.outputs];
-  const ruleList = dTable.ruleList;
+  const { ruleList } = dTable;
   const outputSet = {};
 
   root.hitPolicy = dTable.hitPolicy;
@@ -110,22 +110,20 @@ const createDecisionTree = (dTable) => {
   return root;
 };
 
-const prepareOutput = (outputSet, output, payload) =>
-  new Promise((resolve, reject) => {
-    Promise.all(output.map((i) => {
-      const keys = Object.keys(outputSet[i]);
+const prepareOutput = (outputSet, output, payload) => new Promise((resolve, reject) => {
+  Promise.all(output.map((i) => {
+    const keys = Object.keys(outputSet[i]);
       return new Promise((resolve, reject) => { // eslint-disable-line
-        Promise.all(keys.map(k => outputSet[i][k].ast.build(payload))).then((results) => {
-          resolve(results.reduce((res, val, j) => {
-            const obj = {};
-            obj[keys[j]] = val;
-            return Object.assign({}, obj, res);
-          }, {}));
-        }).catch(err => reject(err));
-      });
-    })).then(results =>
-      resolve(results)).catch(err => reject(err));
-  });
+      Promise.all(keys.map((k) => outputSet[i][k].ast.build(payload))).then((results) => {
+        resolve(results.reduce((res, val, j) => {
+          const obj = {};
+          obj[keys[j]] = val;
+          return { ...obj, ...res };
+        }, {}));
+      }).catch((err) => reject(err));
+    });
+  })).then((results) => resolve(results)).catch((err) => reject(err));
+});
 
 const resolveConflictRules = (root, payload, rules) => {
   let output = [];
@@ -147,16 +145,7 @@ const resolveConflictRules = (root, payload, rules) => {
     });
 
     arr = arr.filter((item, index) => arr.indexOf(item) === index);
-    if (i === 0) {
-      output = arr;
-    } else if (output.length > 0) {
-      output = arr.filter(d => output.indexOf(d) > -1);
-    } else {
-      return false;
-    }
-
-    // output = output.length > 0 ? arr.filter(d => output.indexOf(d) > -1) : arr;
-
+    output = output.length > 0 ? arr.filter((d) => output.indexOf(d) > -1) : arr;
     return true;
   });
 
@@ -178,21 +167,21 @@ const traverseDecisionTreeUtil = (root, payload) => {
         const inputExpressionValue = payload[classKey];
         if (typeof inputExpressionValue !== 'undefined') {
           //! the input expression is resolved from payload
-          Promise.all(sentinelKeys.map(key => node.children[key].ast.build(payload, {}, 'input'))).then((results) => {
-            let res = results.map((f, i) => ({ value: f(inputExpressionValue), index: i })).filter(d => d.value === true);
-            res = res.map(obj => obj.index);
+          Promise.all(sentinelKeys.map((key) => node.children[key].ast.build(payload, {}, 'input'))).then((results) => {
+            let res = results.map((f, i) => ({ value: f(inputExpressionValue), index: i })).filter((d) => d.value === true);
+            res = res.map((obj) => obj.index);
             resolve(res);
-          }).catch(err => reject(err));
+          }).catch((err) => reject(err));
         } else if (decisionMap[classKey]) {
           //! the input expression can be resolved from the decisionMap
           const decision = decisionMap[classKey];
           decision.build(payload)
             .then((value) => {
-              Promise.all(sentinelKeys.map(key => node.children[key].ast.build(payload, {}, 'input')))
+              Promise.all(sentinelKeys.map((key) => node.children[key].ast.build(payload, {}, 'input')))
                 .then((results) => {
                   let res = results.map((f, i) => ({ value, index: i }))
-                    .filter(d => d.value);
-                  res = res.map(obj => obj.index);
+                    .filter((d) => d.value);
+                  res = res.map((obj) => obj.index);
                   resolve(res);
                 })
                 .catch(reject);
@@ -202,9 +191,7 @@ const traverseDecisionTreeUtil = (root, payload) => {
           reject(new Error(`Cannot resolve decision table input expression: ${classKey}`));
         }
       });
-    })).then(results =>
-      resolveConflictRules(root, payload, results).then(results =>
-        resolve(results))).catch(err => reject(err));
+    })).then((results) => resolveConflictRules(root, payload, results).then((results) => resolve(results))).catch((err) => reject(err));
   });
 };
 
@@ -218,12 +205,12 @@ const prepareContext = (root, payload) => {
 const traverseDecisionTree = (root, payload) => new Promise((resolve, reject) => {
   prepareContext(root, payload)
     .then((context) => {
-      const ctx = Object.assign({}, payload, context);
+      const ctx = { ...payload, ...context };
       return traverseDecisionTreeUtil(root, ctx);
     })
-    .then(results => hitPolicyPass(root.hitPolicy, results))
-    .then(output => resolve(output))
-    .catch(err => reject(err));
+    .then((results) => hitPolicyPass(root.hitPolicy, results))
+    .then((output) => resolve(output))
+    .catch((err) => reject(err));
 });
 
 module.exports = {

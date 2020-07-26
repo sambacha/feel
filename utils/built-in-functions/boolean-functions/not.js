@@ -11,6 +11,6 @@ fn is expected to be a curried function with pre-populated x
 fn signature - function(x,y) { // function body  }
 */
 
-const not = fn => y => !fn(y);
+const not = (fn) => (y) => !fn(y);
 
 module.exports = { not };

@@ -13,7 +13,7 @@ const bunyan = require('bunyan');
 const { logger: loggerSettings } = require('./settings');
 
 let logger = (name) => {
-  const settings = Object.assign({}, loggerSettings, { name });
+  const settings = { ...loggerSettings, name };
   const defaultLogger = bunyan.createLogger(settings);
   const levels = ['trace', 'info', 'warn', 'error', 'debug', 'fatal', 'ast'];
   const modifiedLogger = {};
@@ -36,4 +36,4 @@ const configureLogger = (customLogger) => {
   logger = customLogger || logger;
 };
 
-module.exports = { configureLogger, logger: name => logger(name) };
+module.exports = { configureLogger, logger: (name) => logger(name) };

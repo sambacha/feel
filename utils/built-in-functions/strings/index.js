@@ -2,19 +2,19 @@
 const substring = (text, start, length) => {
   if (length && start > -1) {
     return text.substr(start - 1, length);
-  } else if (length && start <= -1) {
+  } if (length && start <= -1) {
     return text.substr(start, length);
-  } else if (start > -1) {
+  } if (start > -1) {
     return text.substr(start - 1);
   }
 
   return text.substr(start);
 };
-const stringLength = text => text.length;
+const stringLength = (text) => text.length;
 
-const upperCase = text => text.toUpperCase();
+const upperCase = (text) => text.toUpperCase();
 
-const lowerCase = text => text.toLowerCase();
+const lowerCase = (text) => text.toLowerCase();
 
 const substringBefore = (text, match) => {
   const idx = text.indexOf(match);
@@ -42,6 +42,13 @@ const matches = (text, pattern, flags) => {
   return rgx.test(text);
 };
 
+const string = (arg) => {
+  if (arg) {
+    return String(arg);
+  }
+  return null;
+};
+
 module.exports = {
   substring,
   'string length': stringLength,
@@ -54,4 +61,5 @@ module.exports = {
   'starts with': startsWith,
   'ends with': endsWith,
   matches,
+  string,
 };

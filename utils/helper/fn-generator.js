@@ -7,11 +7,13 @@
 
 const Big = require('big.js');
 const _ = require('lodash');
-const { valueT, valueInverseT, valueDT, valueInverseDT, valueDTD, valueInverseDTD, valueYMD, valueInverseYMD } = require('./value');
+const moment = require('moment-timezone');
+const {
+  valueT, valueInverseT, valueDT, valueInverseDT, valueDTD, valueInverseDTD, valueYMD, valueInverseYMD,
+} = require('./value');
 const { date, time, 'date and time': dateandtime } = require('../built-in-functions');
 const { logger } = require('../../logger');
 const { enableExecutionLogging } = require('../../settings');
-const moment = require('moment-timezone');
 
 const $log = logger('fn-generator');
 const log = {};
@@ -49,21 +51,21 @@ const operatorMap = {
         log.debug(`performing operation - ${x} < ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).lt(y);
-        } else if (typeof x === 'string' && typeof y === 'string') {
+        } if (typeof x === 'string' && typeof y === 'string') {
           return x < y;
-        } else if (x.isDate && y.isDate) {
+        } if (x.isDate && y.isDate) {
           const checkLt = checkInequality('<'); // eslint-disable-line no-use-before-define
           return checkLt(x, y, dateTimeComponent.date);
-        } else if (x.isDateTime && y.isDateTime) {
+        } if (x.isDateTime && y.isDateTime) {
           return valueDT(x) < valueDT(y);
-        } else if (x.isTime && y.isTime) {
+        } if (x.isTime && y.isTime) {
           // make y with the same offset as x before comparision
           const xOffset = x['time offset'];
           y.utcOffset(xOffset);
           return valueT(x) < valueT(y);
-        } else if (x.isDtd && y.isDtd) {
+        } if (x.isDtd && y.isDtd) {
           return valueDTD(x) < valueDTD(y);
-        } else if (x.isYmd && y.isYmd) {
+        } if (x.isYmd && y.isYmd) {
           return valueYMD(x) < valueYMD(y);
         }
         throw new Error(`${x.type || typeof x} < ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -79,21 +81,21 @@ const operatorMap = {
         log.debug(`performing operation - ${x} <= ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).lte(y);
-        } else if (typeof x === 'string' && typeof y === 'string') {
+        } if (typeof x === 'string' && typeof y === 'string') {
           return x <= y;
-        } else if (x.isDate && y.isDate) {
+        } if (x.isDate && y.isDate) {
           const checkLtEq = checkInequality('<='); // eslint-disable-line no-use-before-define
           return checkLtEq(x, y, dateTimeComponent.date);
-        } else if (x.isDateTime && y.isDateTime) {
+        } if (x.isDateTime && y.isDateTime) {
           return valueDT(x) <= valueDT(y);
-        } else if (x.isTime && y.isTime) {
+        } if (x.isTime && y.isTime) {
           // make y with the same offset as x before comparision
           const xOffset = x['time offset'];
           y.utcOffset(xOffset);
           return valueT(x) <= valueT(y);
-        } else if (x.isDtd && y.isDtd) {
+        } if (x.isDtd && y.isDtd) {
           return valueDTD(x) <= valueDTD(y);
-        } else if (x.isYmd && y.isYmd) {
+        } if (x.isYmd && y.isYmd) {
           return valueYMD(x) <= valueYMD(y);
         }
         throw new Error(`${x.type || typeof x} <= ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -109,21 +111,21 @@ const operatorMap = {
         log.debug(`performing operation - ${x} > ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).gt(y);
-        } else if (typeof x === 'string' && typeof y === 'string') {
+        } if (typeof x === 'string' && typeof y === 'string') {
           return x > y;
-        } else if (x.isDate && y.isDate) {
+        } if (x.isDate && y.isDate) {
           const checkGt = checkInequality('>'); // eslint-disable-line no-use-before-define
           return checkGt(x, y, dateTimeComponent.date);
-        } else if (x.isDateTime && y.isDateTime) {
+        } if (x.isDateTime && y.isDateTime) {
           return valueDT(x) > valueDT(y);
-        } else if (x.isTime && y.isTime) {
+        } if (x.isTime && y.isTime) {
           // make y with the same offset as x before comparision
           const xOffset = x['time offset'];
           y.utcOffset(xOffset);
           return valueT(x) > valueT(y);
-        } else if (x.isDtd && y.isDtd) {
+        } if (x.isDtd && y.isDtd) {
           return valueDTD(x) > valueDTD(y);
-        } else if (x.isYmd && y.isYmd) {
+        } if (x.isYmd && y.isYmd) {
           return valueYMD(x) > valueYMD(y);
         }
         throw new Error(`${x.type || typeof x} > ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -139,21 +141,21 @@ const operatorMap = {
         log.debug(`performing operation - ${x} >= ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).gte(y);
-        } else if (typeof x === 'string' && typeof y === 'string') {
+        } if (typeof x === 'string' && typeof y === 'string') {
           return x >= y;
-        } else if (x.isDate && y.isDate) {
+        } if (x.isDate && y.isDate) {
           const checkGtEq = checkInequality('>='); // eslint-disable-line no-use-before-define
           return checkGtEq(x, y, dateTimeComponent.date);
-        } else if (x.isDateTime && y.isDateTime) {
+        } if (x.isDateTime && y.isDateTime) {
           return valueDT(x) >= valueDT(y);
-        } else if (x.isTime && y.isTime) {
+        } if (x.isTime && y.isTime) {
           // make y with the same offset as x before comparision
           const xOffset = x['time offset'];
           y.utcOffset(xOffset);
           return valueT(x) >= valueT(y);
-        } else if (x.isDtd && y.isDtd) {
+        } if (x.isDtd && y.isDtd) {
           return valueDTD(x) >= valueDTD(y);
-        } else if (x.isYmd && y.isYmd) {
+        } if (x.isYmd && y.isYmd) {
           return valueYMD(x) >= valueYMD(y);
         }
         throw new Error(`${x.type || typeof x} >= ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -168,31 +170,31 @@ const operatorMap = {
     try {
       if (typeof x === 'undefined' && typeof y === 'undefined') {
         return true;
-      } else if (x === null && y === null) {
+      } if (x === null && y === null) {
         return true;
-      } else if (typeof x === 'number' && typeof y === 'number') {
+      } if (typeof x === 'number' && typeof y === 'number') {
         return Big(x).eq(y);
-      } else if (typeof x === 'string' && typeof y === 'string') {
+      } if (typeof x === 'string' && typeof y === 'string') {
         return x === y;
-      } else if (typeof x === 'boolean' && typeof y === 'boolean') {
+      } if (typeof x === 'boolean' && typeof y === 'boolean') {
         return x === y;
-      } else if (x.isDate && y.isDate) {
+      } if (x.isDate && y.isDate) {
         return checkEquality(x, y, dateTimeComponent.date); // eslint-disable-line no-use-before-define
-      } else if (x.isDateTime && y.isDateTime) {
+      } if (x.isDateTime && y.isDateTime) {
         // make y with the same offset as x before comparision
         const xOffset = x['time offset'];
         y.utcOffset(xOffset);
         return checkEquality(x, y, dateTimeComponent.dateandtime); // eslint-disable-line no-use-before-define
-      } else if (x.isTime && y.isTime) {
+      } if (x.isTime && y.isTime) {
         // make y with the same offset as x before comparision
         const xOffset = x['time offset'];
         y.utcOffset(xOffset);
         return checkEquality(x, y, dateTimeComponent.time); // eslint-disable-line no-use-before-define
-      } else if (x.isDtd && y.isDtd) {
+      } if (x.isDtd && y.isDtd) {
         return valueDTD(x) === valueDTD(y);
-      } else if (x.isYmd && y.isYmd) {
+      } if (x.isYmd && y.isYmd) {
         return valueYMD(x) === valueYMD(y);
-      } else if (x.isList && y.isList) {
+      } if (x.isList && y.isList) {
         return _.isEqual(x, y);
       }
       throw new Error(`${x.type || typeof x} = ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -221,9 +223,9 @@ const operatorMap = {
       log.debug(`performing operation - ${x} + ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).plus(y));
-      } else if (typeof x === 'string' && typeof y === 'string') {
+      } if (typeof x === 'string' && typeof y === 'string') {
         return x + y;
-      } else if ((x.isDateTime || x.isDate) && (y.isDateTime || y.isDate)) {
+      } if ((x.isDateTime || x.isDate) && (y.isDateTime || y.isDate)) {
         throw new Error(`${x.type} + ${y.type} : operation unsupported for one or more operands types`);
       } else if (x.isTime && y.isTime) {
         throw new Error(`${x.type} + ${y.type} : operation unsupported for one or more operands types`);
@@ -257,7 +259,7 @@ const operatorMap = {
       log.debug(`performing operation - ${x} - ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).minus(y));
-      } else if (typeof x === 'string' && typeof y === 'string') {
+      } if (typeof x === 'string' && typeof y === 'string') {
         throw new Error(`${x.type} - ${y.type} : operation unsupported for one or more operands types`);
       } else if ((x.isDateTime || x.isDate) && (y.isDateTime || y.isDate)) {
         return valueInverseDTD(valueDT(x) - valueDT(y));
@@ -298,13 +300,13 @@ const operatorMap = {
       log.debug(`performing operation - ${x} * ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).times(y));
-      } else if (x.isYmd && typeof y === 'number') {
+      } if (x.isYmd && typeof y === 'number') {
         return valueInverseYMD(valueYMD(x) * y);
-      } else if (typeof x === 'number' && y.isYmd) {
+      } if (typeof x === 'number' && y.isYmd) {
         return valueInverseYMD(x * valueYMD(y));
-      } else if (x.isDtd && typeof y === 'number') {
+      } if (x.isDtd && typeof y === 'number') {
         return valueInverseDTD(valueDTD(x) * y);
-      } else if (typeof x === 'number' && y.isDtd) {
+      } if (typeof x === 'number' && y.isDtd) {
         return valueInverseDTD(x * valueDTD(y));
       }
       throw new Error(`${x.type || typeof x} * ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -316,13 +318,13 @@ const operatorMap = {
       log.debug(`performing operation - ${x} / ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).div(y));
-      } else if (x.isYmd && typeof y === 'number') {
+      } if (x.isYmd && typeof y === 'number') {
         return y === 0 ? null : valueInverseYMD(valueYMD(x) / y);
-      } else if (typeof x === 'number' && y.isYmd) {
+      } if (typeof x === 'number' && y.isYmd) {
         return x === 0 ? null : valueInverseYMD(valueYMD(y) / x);
-      } else if (x.isDtd && typeof y === 'number') {
+      } if (x.isDtd && typeof y === 'number') {
         return y === 0 ? null : valueInverseDTD(valueDTD(x) / y);
-      } else if (typeof x === 'number' && y.isDtd) {
+      } if (typeof x === 'number' && y.isDtd) {
         return x === 0 ? null : valueInverseDTD(valueDTD(y) / x);
       }
       throw new Error(`${x.type || typeof x} / ${y.type || typeof y} : operation unsupported for one or more operands types`);
@@ -386,4 +388,4 @@ function checkInequality(op) {
   };
 }
 
-module.exports = operator => operatorMap[operator];
+module.exports = (operator) => operatorMap[operator];

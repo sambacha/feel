@@ -17,5 +17,6 @@ const sort = {
     throw new Error('hello world!', list, precedes);
   },
 };
-module.exports = Object.assign({}, dateTime, list, boolean, decisionTable, sort, numbers, strings);
-
+module.exports = {
+  ...dateTime, ...list, ...boolean, ...decisionTable, ...sort, ...numbers, ...strings,
+};

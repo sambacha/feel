@@ -25,17 +25,16 @@ const createDecisionGraphAST = (decisionMap) => {
   return graphAST;
 };
 
-const executeDecisionService = (graphAST, decisionName, payload, graphName) =>
-  new Promise((resolve, reject) => {
-    const decision = graphAST[decisionName];
-    if (decision) {
-      decision
-        .build(payload, { decisionMap: graphAST, graphName })
-        .then((result) => {
-          resolve(result);
-        })
-        .catch(err => reject(err));
-    }
-  });
+const executeDecisionService = (graphAST, decisionName, payload, graphName) => new Promise((resolve, reject) => {
+  const decision = graphAST[decisionName];
+  if (decision) {
+    decision
+      .build(payload, { decisionMap: graphAST, graphName })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => reject(err));
+  }
+});
 
 module.exports = { createDecisionGraphAST, executeDecisionService };
