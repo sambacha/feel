@@ -8,7 +8,7 @@ const DL = require('../../utils/helper/decision-logic');
 const DS = require('../../utils/helper/decision-service');
 const expect = require('chai').expect;
 
-describe('individual sheets...', function(){
+describe('individual sheets...', function () {
   var i = 0;
   var path;
   var xlArr = [
@@ -21,21 +21,21 @@ describe('individual sheets...', function(){
     'RoutingRules.xlsx', 'StudentFinancialPackageEligibility.xlsx'
   ];
 
-  beforeEach('load test file', function(){
+  beforeEach('load test file', function () {
     path = 'test/data/' + xlArr[i++];
   });
 
   var { executeDecisionService, createDecisionGraphAST } = DS;
   var { parseWorkbook } = DL;
 
-  var runTest = function(path, name, payload, suiteCb, testCb) {
+  var runTest = function (path, name, payload, suiteCb, testCb) {
     var decisionMap = parseWorkbook(path);
     var ast = createDecisionGraphAST(decisionMap);
     return executeDecisionService(ast, name, payload, 'a' + i)
     // .then(result => testCb(result))
     // .catch(suiteCb);
   };
-  it('ExamEligibility.xlsx', function(done) {
+  it('ExamEligibility.xlsx', function (done) {
     var payload = {
       GPA: 7,
       d: "1995-11-22"
@@ -49,24 +49,24 @@ describe('individual sheets...', function(){
       .catch(done);
   });
 
-  it('Adjustments2.xlsx', function(done){
+  it('Adjustments2.xlsx', function (done) {
     var payload = {
       Customer: "Private",
       "Order size": 12
     };
-    debugger;
+
     runTest(path, 'Adjustments', payload).then(result => {
       expect(result.Shipping).to.equal('Air');
       expect(result.Discount).to.equal(0.05);
       done();
     })
-    .catch(done);
+      .catch(done);
   });
 
-  it('Applicant_Risk_Rating.xlsx', function(done){
+  it('Applicant_Risk_Rating.xlsx', function (done) {
     var payload = {
-      "Applicant Age" : 25,
-      "Medical History" : "good"
+      "Applicant Age": 25,
+      "Medical History": "good"
     };
 
     runTest(path, 'Applicant_Risk_Rating', payload)
@@ -78,74 +78,74 @@ describe('individual sheets...', function(){
       .catch(done);
   });
 
-  it('ApplicantRiskRating.xlsx', function(done) {
+  it('ApplicantRiskRating.xlsx', function (done) {
     var payload = {
-      "Applicant Age" : -24,
-      "Medical History" : "bad"
+      "Applicant Age": -24,
+      "Medical History": "bad"
     };
 
     runTest(path, 'Applicant Risk Rating', payload)
-    .then(result => {
-      expect(result['Applicant Risk Rating']).to.equal('Medium');
-      done();
-    })
-    .catch(done);
+      .then(result => {
+        expect(result['Applicant Risk Rating']).to.equal('Medium');
+        done();
+      })
+      .catch(done);
   });
 
-  it('Discount.xlsx', function(done) {
-    var payload = { "Customer" : "Business", "Order size" : 10 };
+  it('Discount.xlsx', function (done) {
+    var payload = { "Customer": "Business", "Order size": 10 };
     runTest(path, 'Discount', payload)
-    .then(result => {
-      expect(result.Discount).to.equal(0.15);
-      done();
-    })
-    .catch(done);
+      .then(result => {
+        expect(result.Discount).to.equal(0.15);
+        done();
+      })
+      .catch(done);
   });
 
-  it(`ElectricityBill.xlsx`, function(done) { //electricity bill
-    var payload = { "State" : "Karnataka", "Units" : 31 };
-    debugger;
+  it(`ElectricityBill.xlsx`, function (done) { //electricity bill
+    var payload = { "State": "Karnataka", "Units": 31 };
+
     runTest(path, 'Electricity Bill', payload)
-    .then(results => {
-      expect(results.Amount).to.equal(94.4);
-      done();
-    })
-    .catch(done);
+      .then(results => {
+        expect(results.Amount).to.equal(94.4);
+        done();
+      })
+      .catch(done);
   });
 
-  it(`Holidays.xlsx`, function(done) { //Holidays
-    var payload = { "Age" : 100, "Years of Service" : 200 };
+  it(`Holidays.xlsx`, function (done) { //Holidays
+    var payload = { "Age": 100, "Years of Service": 200 };
     runTest(path, 'Holidays', payload)
-    .then(results => {
+      .then(results => {
 
-      expect(results.length).to.equal(5);
-      expect(results[0].Holidays).to.equal(22);
-      expect(results[1].Holidays).to.equal(5);
-      expect(results[2].Holidays).to.equal(5);
-      expect(results[3].Holidays).to.equal(3);
-      expect(results[4].Holidays).to.equal(3);
-      done();
+        expect(results.length).to.equal(5);
+        expect(results[0].Holidays).to.equal(22);
+        expect(results[1].Holidays).to.equal(5);
+        expect(results[2].Holidays).to.equal(5);
+        expect(results[3].Holidays).to.equal(3);
+        expect(results[4].Holidays).to.equal(3);
+        done();
 
-    })
-    .catch(done);
+      })
+      .catch(done);
   });
 
-  it(`PostBureauRiskCategory.xlsx`, function(done) { //PostBureauRiskCategory
-    var payload = {"Applicant": {"ExistingCustomer" : true}, "Report": {"CreditScore" : 600}, "b" : 60};
+  it(`PostBureauRiskCategory.xlsx`, function (done) { //PostBureauRiskCategory
+    var payload = { "Applicant": { "ExistingCustomer": true }, "Report": { "CreditScore": 600 }, "b": 60 };
     runTest(path, 'PostBureauRiskCategory', payload)
-    .then(results => {
-      expect(results.PostBureauRiskCategory).to.equal('MEDIUM');
-      done();
+      .then(results => {
+        expect(results.PostBureauRiskCategory).to.equal('MEDIUM');
+        done();
 
-    })
-    .catch(done);
+      })
+      .catch(done);
   });
 
-  it('RoutingRules.xlsx', function(done) {
+  it('RoutingRules.xlsx', function (done) {
     var payload = {
-      "Age" : 18,
-      "Risk category" : "High",
-      "Debt review" : false
+      "Age": 18,
+      "Risk category": "High",
+      "Debt review": false
     };
 
     runTest(path, 'Routing rules', payload)
@@ -162,14 +162,14 @@ describe('individual sheets...', function(){
       .catch(done)
   });
 
-  it('StudentFinancialPackageEligibility.xlsx', function(done) {
+  it('StudentFinancialPackageEligibility.xlsx', function (done) {
     var payload = {
-      "Student GPA" : 3.6,
-      "Student Extra-Curricular Activities Count" : 4,
-      "Student National Honor Society Membership" : "Yes"
+      "Student GPA": 3.6,
+      "Student Extra-Curricular Activities Count": 4,
+      "Student National Honor Society Membership": "Yes"
     };
 
-    runTest(path,'Student Financial Package Eligibility', payload)
+    runTest(path, 'Student Financial Package Eligibility', payload)
       .then(results => {
         expect(results.length).to.equal(2);
         expect(results[0]['Student Financial Package Eligibility List']).to.equal('20% Scholarship');

@@ -90,7 +90,7 @@ describe(chalk.blue('Filter Expression Evaluation'), function() {
     });
 
      it('Successfully builds chain of path expression and filter expression to get an array and find the sum', function(done) {
-       debugger;
+    //    debugger;
         const payload= {a : {
             b: [{name: 'Foo', salary: 30000}, {name: 'Bar', salary: 21000}, {name: 'Baz', salary: 20000}]
         }};

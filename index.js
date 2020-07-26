@@ -20,7 +20,9 @@ const jsFeel = {
 };
 
 jsFeel.init = function (settings) {
-  const { logger, enableLexerLogging, enableExecutionLogging, logResult } = settings;
+  const {
+    logger, enableLexerLogging, enableExecutionLogging, logResult,
+  } = settings;
   configureLogger(logger);
   if (enableExecutionLogging !== undefined) {
     feelSettings.enableExecutionLogging = enableExecutionLogging;

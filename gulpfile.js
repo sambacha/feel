@@ -1,12 +1,12 @@
 /*
- *
- *  ©2016-2017 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
- *  Bangalore, India. All Rights Reserved.
- *
- */
+* (C) FreightTrust and Clearing Corporation
+* See License for Authors and Contributors 
+* 
+*/
 
 const gulp = require('gulp');
 const concat = require('gulp-concat');
+// TODO: v2
 // const watch = require('gulp-watch');
 const insert = require('gulp-insert');
 const clean = require('gulp-clean');
@@ -41,28 +41,32 @@ gulp.task('initialize:feel', () => gulp.src('./grammar/feel-initializer.js')
   }))
   .pipe(gulp.dest('./temp')));
 
-// gulp.task('concat:feel', ['initialize:feel']
-gulp.task('concat:feel', () => gulp.src(['./temp/feel-initializer.js', './grammar/feel.pegjs'])
+gulp.task('concat:feel', ['initialize:feel'], () => gulp.src(['./temp/feel-initializer.js', './grammar/feel.pegjs'])
   .pipe(concat('feel.pegjs'))
   .pipe(gulp.dest('./src/')));
 
-// gulp.task('clean:temp', ['initialize:feel', 'concat:feel']
-gulp.task('clean:temp', () => gulp.src('./temp', {read: false})
+
+gulp.task('clean:temp', ['initialize:feel', 'concat:feel'], () => gulp.src('./temp', {
+  read: false,
+})
   .pipe(clean()));
 
-// gulp.task('clean:dist:feel', ['src:lint']
-gulp.task('clean:dist:feel', () => gulp.src('./dist/feel.js', {read: false})
+gulp.task('clean:dist:feel', ['src:lint'], () => gulp.src('./dist/feel.js', {
+  read: false,
+})
   .pipe(clean()));
 
-// gulp.task('clean:dist:feel:ast', ['src:lint']
-gulp.task('clean:dist:feel:ast', () => gulp.src('./dist/feel-ast*.js', {read: false})
+gulp.task('clean:dist:feel:ast', ['src:lint'], () => gulp.src('./dist/feel-ast*.js', {
+  read: false,
+})
   .pipe(clean()));
 
-gulp.task('clean:src:feel', () => gulp.src('./src/feel.pegjs', {read: false})
+gulp.task('clean:src:feel', () => gulp.src('./src/feel.pegjs', {
+  read: false,
+})
   .pipe(clean()));
 
-// gulp.task('generate:parser', ['clean:dist:feel', 'concat:feel']
-gulp.task('generate:parser', () => gulp.src('src/feel.pegjs')
+gulp.task('generate:parser', ['clean:dist:feel', 'concat:feel'], () => gulp.src('src/feel.pegjs')
   .pipe(peg({
     format: 'commonjs',
     cache: true,
@@ -70,17 +74,31 @@ gulp.task('generate:parser', () => gulp.src('src/feel.pegjs')
   }))
   .pipe(gulp.dest('./dist')));
 
-// gulp.task('dist:feel:ast', ['clean:dist:feel:ast']
-gulp.task('dist:feel:ast', () => gulp.src('src/feel-ast.js')
+gulp.task('generate:parser:trace', ['clean:dist:feel'], () => gulp.src('src/feel.pegjs')
+  .pipe(peg({
+    format: 'commonjs',
+    cache: true,
+    allowedStartRules: ["Start", "SimpleExpressions", "UnaryTests", "SimpleUnaryTests"],
+    trace: true
+  }))
+  .pipe(gulp.dest('./dist'))
+);
+
+gulp.task('dist:feel:ast', ['clean:dist:feel:ast'], () => gulp.src('src/feel-ast.js')
   .pipe(gulp.dest('./dist')));
 
-// gulp.task('dist:feel:ast:parser', ['clean:dist:feel:ast']
-gulp.task('dist:feel:ast:parser', () => gulp.src('src/feel-ast-parser.js')
+gulp.task('dist:feel:ast:parser', ['clean:dist:feel:ast'], () => gulp.src('src/feel-ast-parser.js')
   .pipe(gulp.dest('./dist')));
 
-gulp.task('mocha', () => gulp.src(['test/*.js'], {read: false})
-  .pipe(mocha({reporter: 'list'}))
+
+gulp.task('mocha', () => gulp.src(['test/*.js'], {
+  read: false,
+})
+  .pipe(mocha({
+    reporter: 'list',
+  }))
   .on('error', gutil.log));
+
 
 gulp.task('lint', () => {
   return gulp.src(['**/*.js', '!node_modules/**'])
@@ -110,7 +128,7 @@ gulp.task('pre-test-ci', function () {
     .pipe(istanbul.hookRequire());
 });
 
-gulp.task('test-ci', gulp.series('pre-test-ci', function () {
+gulp.task('test-ci', ['pre-test-ci'], function () {
   return gulp.src(['test/**/*.spec.js'])
     .pipe(mocha())
     .pipe(istanbul.writeReports({
@@ -119,9 +137,9 @@ gulp.task('test-ci', gulp.series('pre-test-ci', function () {
       reportOpts: { dir: './coverage' }
     }))
     .pipe(istanbul.enforceThresholds({ thresholds: { global: { statements: 85, branches: 70, lines: 85, functions: 90 } } }));
-}));
+});
 
-gulp.task('test-ci-html', gulp.series('pre-test-ci', function () {
+gulp.task('test-ci-html', ['pre-test-ci'], function () {
   return gulp.src(['test/**/*.spec.js'])
     .pipe(mocha())
     .pipe(istanbul.writeReports({
@@ -130,20 +148,18 @@ gulp.task('test-ci-html', gulp.series('pre-test-ci', function () {
       reportOpts: { dir: './coverage' }
     }))
     .pipe(istanbul.enforceThresholds({ thresholds: { global: { statements: 85, branches: 70, lines: 85, functions: 90 } } }));
-}));
+});
 
-// ['initialize:feel', 'clean:src:feel', 'concat:feel', 'clean:temp']
-gulp.task('build', gulp.series('initialize:feel', 'clean:src:feel', 'concat:feel', 'clean:temp'));
+gulp.task('build', ['initialize:feel', 'clean:src:feel', 'concat:feel', 'clean:temp']);
 
-// ['build', 'generate:parser', 'mocha']
-gulp.task('default', gulp.series('initialize:feel', 'clean:src:feel', 'src:lint', 'concat:feel', 'clean:temp', 'clean:dist:feel', 'generate:parser', 'mocha'));
+gulp.task('default', ['build', 'generate:parser', 'mocha']);
 
-// gulp.task('watch', () => {
-//   gulp.watch('./grammar/*', ['build']);
-//   gulp.watch('./src/*.pegjs', ['generate:parser']);
-//   gulp.watch('./src/*.js', ['dist:feel:ast', 'dist:feel:ast:parser']);
-//   gulp.watch('./utils/**/*.js', ['utils:lint']);
-// });
+gulp.task('watch', () => {
+  gulp.watch('./grammar/*', ['build']);
+  gulp.watch('./src/*.pegjs', ['generate:parser']);
+  gulp.watch('./src/*.js', ['dist:feel:ast', 'dist:feel:ast:parser']);
+  gulp.watch('./utils/**/*.js', ['utils:lint']);
+});
 
-// ['build', 'dist:feel:ast', 'dist:feel:ast:parser', 'generate:parser']
-gulp.task('dist', gulp.series('initialize:feel', 'clean:src:feel', 'src:lint', 'concat:feel', 'clean:temp', 'clean:dist:feel', 'generate:parser', 'clean:dist:feel:ast', 'dist:feel:ast', 'dist:feel:ast:parser'));
+gulp.task('dist', ['build', 'dist:feel:ast', 'dist:feel:ast:parser', 'generate:parser']);
+gulp.task('dist:debug', ['build', 'dist:feel:ast', 'dist:feel:ast:parser', 'generate:parser:trace']);

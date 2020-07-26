@@ -15,6 +15,8 @@ These are used for performing calculations and conversions.
 
 const moment = require('moment-timezone');
 const { time, 'date and time': dateAndTime, duration } = require('../built-in-functions');
+
+/* eslint-disable-next-line */
 const { date_ISO_8601, time_ISO_8601, epoch } = require('./meta');
 
 const prepareTime = (value, offset) => {
@@ -53,12 +55,14 @@ const valueInverseDT = (value, offset = 'Z') => {
   return dateAndTime(e.add(value, 'seconds').utcOffset(offset).format());
 };
 
-const valueDTD = obj => obj.asSeconds();
+const valueDTD = (obj) => obj.asSeconds();
 
-const valueInverseDTD = value => duration(`PT${Math.floor(value)}S`);
+const valueInverseDTD = (value) => duration(`PT${Math.floor(value)}S`);
 
-const valueYMD = obj => obj.asMonths();
+const valueYMD = (obj) => obj.asMonths();
 
-const valueInverseYMD = value => duration(`P${Math.floor(value)}M`);
+const valueInverseYMD = (value) => duration(`P${Math.floor(value)}M`);
 
-module.exports = { valueT, valueInverseT, valueDT, valueInverseDT, valueDTD, valueInverseDTD, valueYMD, valueInverseYMD };
+module.exports = {
+  valueT, valueInverseT, valueDT, valueInverseDT, valueDTD, valueInverseDTD, valueYMD, valueInverseYMD,
+};

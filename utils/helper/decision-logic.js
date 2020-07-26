@@ -72,16 +72,16 @@ function isType5String(testString) {
 function processString(inputString) {
   if (isCsvString(inputString)) {
     return `"${inputString.match(rCsvString)[1]}"`;
-  } else if (isType5String(inputString)) {
+  } if (isType5String(inputString)) {
     // return inputString.replace(/""(\w+)""/g, (_, value) => `*${value}*`)
     //   .replace(/"/g, '')
     //   .replace(/\*/g, '"')
     //   .replace(/\s/g, '');
     return inputString
       .match(rCaptureQuotes)
-      .map(s => s.replace(/""/g, '"')).join(',');
+      .map((s) => s.replace(/""/g, '"')).join(',');
     // .split(',');
-  } else if (isType2String(inputString)) {
+  } if (isType2String(inputString)) {
     return inputString.substring(1, inputString.length - 1).replace(/""/g, '"');
   }
 
@@ -100,8 +100,8 @@ function processValueString(inputString) {
   if (rCsvStringType5.test(inputString)) {
     return inputString
       .match(rCaptureQuotes)
-      .map(s => s.replace(/""/g, '"'));
-  } else if (inputString.indexOf(',') > -1) { // val1, val2, val3, ...
+      .map((s) => s.replace(/""/g, '"'));
+  } if (inputString.indexOf(',') > -1) { // val1, val2, val3, ...
     return inputString.split(/\s*,\s*/);
   }
 
@@ -137,7 +137,7 @@ function parseDecisionTableFromCsv(csvString) {
   let hasContext = false;
   while (!line.startsWith('RuleTable')) {
     const fields = line.split(delimiter);
-    const tokensCount = fields.filter(token => token.length).length;
+    const tokensCount = fields.filter((token) => token.length).length;
     if (tokensCount > 1) {
       contextEntries.push({
         [fields[0]]: processContextString(fields[1]),
@@ -153,13 +153,13 @@ function parseDecisionTableFromCsv(csvString) {
   let components = line.split(delimiter);
 
   // 1.1 determine number of input components
-  const conditionCount = components.filter(c => c === 'Condition').length;
+  const conditionCount = components.filter((c) => c === 'Condition').length;
 
   // 1.2 get the input expressions & hit policy
   i += 1;
   line = csvArray[i];
   components = line.split(delimiter);
-  dto.hitPolicy = components[0];
+  [dto.hitPolicy] = components;
   dto.outputs = [];
   const inputExpressionList = [];
   // 1.2.1 loop though the rule table line to get input expressions
@@ -219,7 +219,7 @@ function parseDecisionTableFromCsv(csvString) {
     }
   }
 
-  dto.ruleList = generateContextString(ruleList.map(cl => generateContextString(cl, false)), 'csv');
+  dto.ruleList = generateContextString(ruleList.map((cl) => generateContextString(cl, false)), 'csv');
 
   // 2. generating the context entry object for decision arguments
   let outputsString;
@@ -240,8 +240,8 @@ function parseDecisionTableFromCsv(csvString) {
 
   if (inputValuesList.length || outputValuesList.length) {
     contextEntry.push({
-      'input values list': generateContextString(inputValuesList.map(i => generateContextString(i, false)), 'csv'),
-      'output values': generateContextString(outputValuesList.map(i => generateContextString(i, false)), 'csv'),
+      'input values list': generateContextString(inputValuesList.map((i) => generateContextString(i, false)), 'csv'),
+      'output values': generateContextString(outputValuesList.map((i) => generateContextString(i, false)), 'csv'),
     });
   }
 
@@ -266,7 +266,7 @@ function parseBoxedContextWithoutResultFromCsv(csvString) {
   const entries = [];
   for (i = 1, j = lines.length; i < j; i += 1) {
     const fields = lines[i].split(delimiter);
-    if (fields.filter(f => f.length).length) {
+    if (fields.filter((f) => f.length).length) {
       if (fields[0].length) {
         entries.push(`${fields[0]} : ${processContextString(fields[1])}`);
       }
@@ -285,7 +285,7 @@ function parseBoxedContextWithResultFromCsv(csvString) {
     line = csvArray[i];
     if (!line.startsWith('(')) {
       const fields = line.split(delimiter);
-      if (fields[0].length && fields.filter(f => f.length).length > 1) {
+      if (fields[0].length && fields.filter((f) => f.length).length > 1) {
         entries.push(`${fields[0]} : ${processContextString(fields[1])}`);
       } else if (fields[0].length) {
         entries.push(`result : ${processContextString(fields[0])}`);
@@ -305,7 +305,7 @@ function parseBusinessModelFromCsv(csvString) {
     const fields = line.split(delimiter);
 
     // TODO handle complex cases
-    const tokensCount = fields.filter(token => token.length).length;
+    const tokensCount = fields.filter((token) => token.length).length;
     if (tokensCount > 1) {
       contextEntries.push({ [fields[0]]: fields[1] });
     } else if (tokensCount === 1) {
@@ -354,7 +354,7 @@ const makeContextObject = (csvExcel) => {
 const parseCsvToJson = function (csvArr) {
   return csvArr.reduce((hash, item) => {
     const keys = Object.keys(item);
-    return Object.assign({}, hash, { [keys[0]]: item[keys[0]] });
+    return { ...hash, [keys[0]]: item[keys[0]] };
   }, {});
 };
 
@@ -374,7 +374,7 @@ const generateJsonFEEL = function (jsonCsvObject) {
     const ctx = makeContext(csvModel);
     // hash[ctx.qn] = ctx.expression;
     // return hash;
-    return Object.assign({}, hash, { [ctx.qn]: ctx.expression });
+    return { ...hash, [ctx.qn]: ctx.expression };
   }, {});
 };
 
@@ -420,22 +420,22 @@ const generateContextString = function (contextEntries, isRoot = true) {
   if (feelType === 'object') {
     if (typeof isRoot === 'string' && isRoot === 'csv') {
       return stringArray.join(',');
-    } else if (typeof isRoot === 'boolean' && isRoot) {
+    } if (typeof isRoot === 'boolean' && isRoot) {
       return stringArray.join(',');
     }
 
     return `{${stringArray.join(',')}}`;
-  } else if (feelType === 'array') {
+  } if (feelType === 'array') {
     if (typeof isRoot === 'string' && isRoot === 'csv') {
       return `[${stringArray.join(',')}]`;
-    } else if (typeof isRoot === 'string' && isRoot === 'list') {
+    } if (typeof isRoot === 'string' && isRoot === 'list') {
       return stringArray.join(',');
-    } else if (typeof isRoot === 'boolean' && isRoot) {
+    } if (typeof isRoot === 'boolean' && isRoot) {
       return `{${stringArray.join(',')}}`;
     }
 
-    return `[${stringArray.map(x => `'${x}'`).join(',')}]`;
-  } else if (feelType === 'string') {
+    return `[${stringArray.map((x) => `'${x}'`).join(',')}]`;
+  } if (feelType === 'string') {
     return contextEntries;
   }
 

@@ -14,21 +14,21 @@ var chalk = require('chalk');
 
 var DS = require('../../utils/helper/decision-service');
 
-describe(chalk.blue('Pegjs parsing tests...'), function(){
-  it('should successfully parse a excel workbook - decision service', function()  {
+describe(chalk.blue('Pegjs parsing tests...'), function () {
+  it('should successfully parse a excel workbook - decision service', function () {
     var file = 'test/data/RoutingDecisionService.xlsx';
-    debugger;
+
     var jsonFeel = DL.parseWorkbook(file);
 
     var keys = Object.keys(jsonFeel)
 
-    keys.forEach(function(key) {
+    keys.forEach(function (key) {
       var feelExpression = jsonFeel[key];
       try {
         var grammer = FEEL.parse(feelExpression);
       }
-      catch(e) {
-        expect(true, JSON.stringify({key: key, feel: feelExpression, error: e.message}, null, 2)).to.be.false;
+      catch (e) {
+        expect(true, JSON.stringify({ key: key, feel: feelExpression, error: e.message }, null, 2)).to.be.false;
       }
 
       expect(grammer, 'For name: ' + key).not.to.be.undefined;
@@ -90,8 +90,8 @@ describe(chalk.blue('Pegjs parsing tests...'), function(){
 
   // });
 
-  it('should parse the RoutingRules.xlsx data without errors', function(){
-    var file ='test/data/RoutingRules.xlsx';
+  it('should parse the RoutingRules.xlsx data without errors', function () {
+    var file = 'test/data/RoutingRules.xlsx';
     var jsonFeel = DL.parseWorkbook(file);
     var values = Object.keys(jsonFeel).map(k => jsonFeel[k]);
   });

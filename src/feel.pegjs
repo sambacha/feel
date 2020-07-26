@@ -1,10 +1,9 @@
 { 
 /*
- *
- *  ©2016-2017 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
- *  Bangalore, India. All Rights Reserved.
- *
- */
+* (C) FreightTrust and Clearing Corporation
+* See License for Authors and Contributors 
+* 
+*/
 // initializer section start
 
 // ast nodes are the constructors used to construct the ast for the parsed grammar
@@ -583,9 +582,9 @@ LeftExpd
 ComparisionOperator
     = "="
     / "!="
-    / $"<" !"="
+    / $("<" !"=")
     / "<="
-    / $">" !"="
+    / $(">" !"=")
     / ">="
 
 Comparision
