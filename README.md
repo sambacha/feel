@@ -1,10 +1,6 @@
-[![Build Status](https://travis-ci.org/EdgeVerve/feel.svg?branch=master)](https://travis-ci.org/EdgeVerve/feel) [![Coverage Status](https://coveralls.io/repos/github/EdgeVerve/feel/badge.svg?branch=master)](https://coveralls.io/github/EdgeVerve/feel?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![npm](https://img.shields.io/npm/v/js-feel.svg)](https://npmjs.org/package/js-feel) 
-
-[![NPM](https://nodei.co/npm/js-feel.png?compact=true)](https://npmjs.org/package/js-feel)
-
 # About
 
-[FEEL](https://github.com/EdgeVerve/feel/wiki/What-is-FEEL%3F) is an expression language based on DMN specification conformance level 3.
+FEEL is an expression language based on DMN specification conformance level 3.
 Written using [PEG.js](https://pegjs.org/) - JavaScript Parser Generator.
 FEEL is a very powerful language built with the purpose of defining rules in Business Rule Engines.
 FEEL also offers an API to implement and execute Decision Table defined in excel (.xlsx)
@@ -178,6 +174,28 @@ Some valid FEEL expressions (logically categorized):
 
 ***Please note: This is not a complete list of FEEL Expressions. Please refer [DMN Specification Document](http://www.omg.org/spec/DMN/1.1/) for detailed documentation on FEEL grammar.***
 
+## Webpack config
+```javascript
+plugins: [
+    // Removes a critical warning about dynamic dependencies, as it is
+    // only relevant to "external functions", which we don't need to use.
+    new webpack.ContextReplacementPlugin(/js-feel/, (data) => {
+        delete data.dependencies[0].critical;
+        return data;
+    }),
+    // None of these are required for the standalone bit of js-feel to work,
+    // so we can safely just ignore them.
+    new webpack.IgnorePlugin(/source-map-support|dtrace-provider|xlsx/)
+]
+```
+```javascript
+Initialisation
+// Configure js feel to use the browser console for logging, rather than bunyan
+const jsFeel = require("js-feel")();
+jsFeel.init({ logger: () => console })
+const { feel } = jsFeel;
+
+```
 # Sample Rules
 
 [Validation.xlsx](/test/data/Validation.xlsx)
