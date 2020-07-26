@@ -1,6 +1,6 @@
 {
-  "name": "js-feel",
-  "version": "1.4.5",
+  "name": "@freight-trust/js-feel",
+  "version": "1.4.6",
   "description": "FEEL(Friendly Enough Expression Language) based on DMN specification 1.1 for conformance level 3",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "lintfix": "eslint . --fix",
     "test": "./node_modules/.bin/mocha ./test/**/*.spec.js",
     "build": "./node_modules/.bin/gulp",
+    "release": "standard-version",
     "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
   },
   "pre-commit": [
@@ -35,7 +36,7 @@
   "dependencies": {
     "big.js": "3.2.0",
     "bunyan": "1.8.12",
-    "lodash": "4.17.15",
+    "lodash": "^4.17.19",
     "moment": "2.24.0",
     "moment-timezone": "0.5.27",
     "xlsx": "^0.15.0"
@@ -58,11 +59,12 @@
     "gulp-mocha": "7.0.2",
     "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
-    "minimist": "1.2.0",
+    "minimist": "^1.2.5",
     "mocha": "^6.2.2",
     "pegjs": "^0.10.0",
     "pegjs-backtrace": "0.1.2",
     "pre-commit": "1.2.2",
+    "standard-version": "^8.0.2",
     "through2": "2.0.5"
   }
 }
