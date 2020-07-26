@@ -12,17 +12,17 @@ const expect = chai.expect;
 
 describe(chalk.blue('date and time built-in function grammar test'), () => {
   it('should parse date and time with format "YYYY-MM-DDTHH:mm:ssZ"', (done) => {
-    debugger;
+
     const text = 'date and time("2012-12-24T23:59:00").isDateTime';
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.be.true;
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.be.true;
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -33,12 +33,12 @@ describe(chalk.blue('date and time built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-          .then((result) => {
-            expect(result).to.be.true;
-            done();
-          }).catch((err) => {
-            done(err);
-          });
+        .then((result) => {
+          expect(result).to.be.true;
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }

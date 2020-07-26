@@ -13,14 +13,14 @@ var fs = require('fs');
 var testDataFile = 'test/data/RoutingDecisionService.xlsx';
 var testDataFile2 = 'test/data/ApplicantData.xlsx';
 
-describe('boxed expression tests...', function() {
-  it('should generate the required boxed invocation expression from worksheet', function() {
+describe('boxed expression tests...', function () {
+  it('should generate the required boxed invocation expression from worksheet', function () {
     var workbook = XLSX.readFile(testDataFile);
 
     var worksheet = workbook.Sheets["Application Risk Score"];
 
-    var csvExcel = XLSX.utils.sheet_to_csv(worksheet, { FS: '&SP', RS: '&RSP'});
-    // debugger;
+    var csvExcel = XLSX.utils.sheet_to_csv(worksheet, { FS: '&SP', RS: '&RSP' });
+
     var isBoxed = DL._.isBoxedInvocation(csvExcel);
 
     expect(isBoxed).to.equal(true);
@@ -29,9 +29,9 @@ describe('boxed expression tests...', function() {
     var generateContextString = DL._.generateContextString;
 
     var funcContext = {
-      "Age" : "Applicant data . Age",
-      "Marital Status" : "Applicant data . MaritalStatus",
-      "Employment Status" : "Applicant data . EmploymentStatus"
+      "Age": "Applicant data . Age",
+      "Marital Status": "Applicant data . MaritalStatus",
+      "Employment Status": "Applicant data . EmploymentStatus"
     };
 
     var funcContextString = generateContextString(funcContext, "csv");
@@ -46,7 +46,7 @@ describe('boxed expression tests...', function() {
   });
 
 
-  it('should generate expression for boxed context with result correctly', function() {
+  it('should generate expression for boxed context with result correctly', function () {
     var generateContextString = DL._.generateContextString;
     var workbook = XLSX.readFile(testDataFile);
 
@@ -54,20 +54,20 @@ describe('boxed expression tests...', function() {
 
     expect(worksheet).to.be.defined;
 
-    var csvExcel = XLSX.utils.sheet_to_csv(worksheet, { FS: '&SP', RS: '&RSP'});
+    var csvExcel = XLSX.utils.sheet_to_csv(worksheet, { FS: '&SP', RS: '&RSP' });
 
     var isContextWithResult = DL._.isBoxedContextWithResult(csvExcel);
 
     expect(isContextWithResult).to.be.true;
 
     var contextEntries = {
-      "Monthly Fee" : "if Product Type = \"STANDARD LOAN\" "
-                      + "then 20.00 "
-                      + "else if Product Type = \"SPECIAL LOAN\" "
-                      + "then 25.00 "
-                      + "else null",
-      "Monthly Repayment" : "PMT(Rate, Term, Amount)",
-      "result" : "Monthly Repayment + Monthly Fee"
+      "Monthly Fee": "if Product Type = \"STANDARD LOAN\" "
+        + "then 20.00 "
+        + "else if Product Type = \"SPECIAL LOAN\" "
+        + "then 25.00 "
+        + "else null",
+      "Monthly Repayment": "PMT(Rate, Term, Amount)",
+      "result": "Monthly Repayment + Monthly Fee"
     };
 
     var expectedCtxString = generateContextString(contextEntries, false);
@@ -79,7 +79,7 @@ describe('boxed expression tests...', function() {
 
   });
 
-  it('should generate expression for boxed context without result', function() {
+  it('should generate expression for boxed context without result', function () {
     var generateContextString = DL._.generateContextString;
     var workbook = XLSX.readFile(testDataFile2);
 
@@ -87,19 +87,19 @@ describe('boxed expression tests...', function() {
 
     expect(worksheet).to.be.defined;
 
-    var csvExcel = XLSX.utils.sheet_to_csv(worksheet, { FS: '&SP', RS: '&RSP'});
+    var csvExcel = XLSX.utils.sheet_to_csv(worksheet, { FS: '&SP', RS: '&RSP' });
     expect(csvExcel.length).to.not.equal(0)
     var isContext = DL._.isBoxedContextWithoutResult(csvExcel);
     expect(isContext).to.be.true;
     var contextEntries = {
-      "Age" : '51',
-      "MaritalStatus" : '"M"',
+      "Age": '51',
+      "MaritalStatus": '"M"',
       EmploymentStatus: '"EMPLOYED"',
       ExistingCustomer: 'FALSE'
     };
 
     var expectedCtxString = generateContextString(contextEntries, false);
-    // debugger;
+
     var computedCtxString = DL._.makeContext(csvExcel).expression;
 
     expect(computedCtxString).to.equal(expectedCtxString);

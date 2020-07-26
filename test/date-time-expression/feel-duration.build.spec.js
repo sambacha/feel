@@ -9,19 +9,19 @@ const chai = require('chai');
 const FEEL = require('../../dist/feel');
 
 const expect = chai.expect;
-debugger;
+
 describe(chalk.blue('duration built-in function grammar test'), () => {
   it('should parse days and time duration', (done) => {
     const text = 'duration("P2DT20H14M").isDtd';
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.be.true;
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.be.true;
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -32,12 +32,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.be.true;
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.be.true;
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -48,12 +48,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.equal(1);
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.equal(1);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -64,12 +64,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.equal(11);
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.equal(11);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -80,12 +80,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.equal(5);
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.equal(5);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -96,12 +96,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.equal(12);
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.equal(12);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -112,12 +112,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.equal(10);
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.equal(10);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }
@@ -128,12 +128,12 @@ describe(chalk.blue('duration built-in function grammar test'), () => {
     try {
       const parsedGrammar = FEEL.parse(text);
       parsedGrammar.build()
-            .then((result) => {
-              expect(result).to.equal(25);
-              done();
-            }).catch((err) => {
-              done(err);
-            });
+        .then((result) => {
+          expect(result).to.equal(25);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
     } catch (err) {
       done(err);
     }

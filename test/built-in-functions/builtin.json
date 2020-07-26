@@ -1,0 +1,398 @@
+[
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-date(from)",
+        "expression": "date(\"2012-12-25\") - date(\"2012-12-24\") = duration(\"P1D\")",
+        "description": "convert from to a date"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-date(from)",
+        "expression": "date( date and time(\"2012-12-25T11:00:00Z\")) = date(\"2012-12-25\")",
+        "description": "convert from to a date (set time components to null)"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-date(year,month,day)",
+        "expression": "date(2012, 12, 25) = date(\"2012-12-25\")",
+        "description": "creates a date from year, month, day component values"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-date and time(date, time)",
+        "expression": "date and time(\"2012-12-24T23:59:00\") = date and time(date(\"2012-12-24\"), time(\"T23:59:00\"))",
+        "description": "creates a date time from the given date (ignoring any time component) and the given time"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-date and time(from)",
+        "expression": "date and time(\"2012-12-24T23:59:00\") + duration(\"PT1M\") = date and time(\"2012-12-25T00:00:00\")",
+        "description": "convert from to a date and time"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-time(from)",
+        "expression": "time(\"23:59:00z\") + duration(\"PT2M\") = time(\"00:01:00@Etc/UTC\")",
+        "description": "convert from to time"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-time(from)",
+        "expression": "time(date and time(\"2012-12-25T11:00:00Z\")) = time(\"11:00:00Z\")",
+        "description": "convert from to time (ignoring date components)"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-time(hour, minute, second, offset)",
+        "expression": "time(\"T23:59:00z\") = time(23, 59, 0, duration(\"PT0H\"))",
+        "description": "creates a time from the given component values"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-number(from, grouping separator, decimal separator)",
+        "expression": "number(\"1 000,0\", \" \", \",\") = number(\"1,000.0\",\",\", \".\")",
+        "description": "convert from to a number"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-string(from)",
+        "expression": "string(1.1) = \"1.1\"",
+        "description": "convert from to a string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-string(from)",
+        "expression": "string(null) = null",
+        "description": "convert from to a string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-duration(from)",
+        "expression": "date and time(\"2012-12-24T23:59:00\") - date and time(\"2012-12-22T03:45:00\") = duration(\"P2DT20H14M\")",
+        "description": "convert from to a days and time or years and months duration"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-duration(from)",
+        "expression": "duration(\"P2Y2M\") = duration(\"P26M\")",
+        "description": "convert from to a days and time or years and months duration"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "sematics of conversion functions-years and months duration(from, to)",
+        "expression": "years and months duration(date(\"2011-12-22\"), date(\"2013-08-24\") ) = duration(\"P1Y8M\")",
+        "description": "return years and months duration between from and to"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of Boolean functions-not(negand)",
+        "expression": "not(true) = false",
+        "description": "logical negation"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of Boolean functions-not(negand)",
+        "expression": "not(null) = null",
+        "description": "logical negation"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring(string, start position, length?)",
+        "expression": "substring(\"foobar\",3) = \"obar\"",
+        "description": "return length (or all) characters in string, starting at start position. 1st position is 1, last position is -1"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring(string, start position, length?)",
+        "expression": "substring(\"foobar\",3,3) = \"oba\"",
+        "description": "return length (or all) characters in string, starting at start position. 1st position is 1, last position is -1"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring(string, start position, length?)",
+        "expression": "substring(\"foobar\", -2, 1) = \"a\"",
+        "description": "return length (or all) characters in string, starting at start position. 1st position is 1, last position is -1"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-string length(string)",
+        "expression": "string length(\"foo\") = 3",
+        "description": "return length of string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-upper case(string)",
+        "expression": "upper case(\"aBc4\") = \"ABC4\"",
+        "description": "return uppercased string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-lower case(string)",
+        "expression": "lower case(\"aBc4\") = \"abc4\"",
+        "description": "return lowercased string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring before(string, match)",
+        "expression": "substring before(\"foobar\", \"bar\") = \"foo\"",
+        "description": "return substring of string before the match in string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring before(string, match)",
+        "expression": "substring before(\"foobar\", \"xyz\") = \"\"",
+        "description": "return substring of string before the match in string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring after(string, match)",
+        "expression": "substring after(\"foobar\", \"ob\") = \"ar\"",
+        "description": "return substring of string after the match in string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-substring after(string, match)",
+        "expression": "substring after(\"\", \"a\") = \"\"",
+        "description": "return substring of string after the match in string"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-replace(input, pattern, replacement, flags?)",
+        "expression": "replace(\"abcd\", \"(ab)|(a)\", \"[1=$1][2=$2]\") = \"[1=ab][2=]cd\"",
+        "description": "regular expression pattern matching and replacement"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-contains(string, match)",
+        "expression": "contains(\"foobar\", \"of\") = false",
+        "description": "does the string contain the match?"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-starts with(string, match)",
+        "expression": "starts with(\"foobar\", \"fo\") = true",
+        "description": "does the string start with the match?"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-ends with(string, match)",
+        "expression": "ends with(\"foobar\", \"r\") = true",
+        "description": "does the string end with the match?"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of string functions-matches(input, pattern, flags?)",
+        "expression": "matches(\"foobar\", \"^fo*b\") = true",
+        "description": "does the input match the regexp pattern?"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-list contains(list, element)",
+        "expression": "list contains([1,2,3], 2) = true",
+        "description": "does the list contain the element?"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-count(list)",
+        "expression": "count([1,2,3]) = 3",
+        "description": "return size of list"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-min(list)",
+        "expression": "min([1,2,3]) = 1",
+        "description": "return minimum item"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-min(c1,…, cN), N >1",
+        "expression": "min(1,2,3) = 1",
+        "description": "return minimum item"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-max(list)",
+        "expression": "max([1,2,3]) = 3",
+        "description": "return maximum item"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-max(c1,…, cN), N >1",
+        "expression": "max(1,2,3) = 3",
+        "description": "return maximum item"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-sum(list)",
+        "expression": "sum([1,2,3]) = 6",
+        "description": "return sum of numbers"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-sum(n1,…, nN), N >1",
+        "expression": "sum(1,2,3) = 6",
+        "description": "return sum of numbers"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-mean(list)",
+        "expression": "mean([1,2,3]) = 2",
+        "description": "return arithmetic mean (average) of numbers"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-mean(n1,…, nN), N >1",
+        "expression": "mean(1,2,3) = 2",
+        "description": "return arithmetic mean (average) of numbers"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-and(list)",
+        "expression": "and([false,null,true]) = false",
+        "description": "return false if any item is false, else true if all items are true, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-and(b1,…, bN), N >1",
+        "expression": "and(false,null,true) = false",
+        "description": "return false if any item is false, else true if all items are true, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-and(list)",
+        "expression": "and([]) = true",
+        "description": "return false if any item is false, else true if all items are true, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-and(b1,…, bN), N >1",
+        "expression": "and(0) = null",
+        "description": "return false if any item is false, else true if all items are true, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-or(list)",
+        "expression": "or([false,null,true]) = true",
+        "description": "return true if any item is true, else false if all items are false, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-or(b1,…, bN), N >1",
+        "expression": "or(false,null,true) = true",
+        "description": "return true if any item is true, else false if all items are false, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-or(list)",
+        "expression": "or([]) = false",
+        "description": "return true if any item is true, else false if all items are false, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-or(b1,…, bN), N >1",
+        "expression": "or(0) = null",
+        "description": "return true if any item is true, else false if all items are false, else null"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-sublist(list, start position, length?)",
+        "expression": "sublist([1,2,3], 1, 2) = [2]",
+        "description": "return list of length (or all) elements of list, starting with list[start position]. 1st position is 1, last position is -1"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-append(list, item…)",
+        "expression": "append([1], 2, 3) = [1,2,3]",
+        "description": "return new list with items appended"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-concatenate(list…)",
+        "expression": "concatenate([1,2],[3]) = [1,2,3]",
+        "description": "return new list that is a concatenation of the arguments"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-insert before(list, position, newItem)",
+        "expression": "insert before([1,3],1,2) = [1,2,3]",
+        "description": "return new list with newItem inserted at position"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-remove(list, position)",
+        "expression": "remove([1,2,3], 2) = [1,3]",
+        "description": "list with item at position removed"
+    },
+    {
+        "executionFlag": "skip",
+        "group": "semantics of list functions-reverse(list)",
+        "expression": "reverse([1,2,3]) = [3,2,1]",
+        "description": "reverse the list"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-index of(list, match)",
+        "expression": "every x in index of([1,2,3,2],2) satisfies list contains([2,4], x)",
+        "description": "return ascending list of list positions containing match"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-union(list…)",
+        "expression": "every x in union([1,2],[2,3]) satisfies list contains([1,2,3], x)",
+        "description": "concatenate with duplicate"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-distinct values(list)",
+        "expression": "every x in distinct values([1,2,3,2,1]) satisfies list contains([1,2,3], x)",
+        "description": "removal"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of list functions-flatten(list)",
+        "expression": "every x in flatten([[1,2],[[3]], 4]) satisfies list contains([1,2,3,4], x)",
+        "description": "flatten nested lists"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-decimal(n, scale)",
+        "expression": "decimal(1/3, 2) = .33",
+        "description": "return n with given scale"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-decimal(n, scale)",
+        "expression": "decimal(1.5, 0) = 2",
+        "description": "return n with given scale"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-decimal(n, scale)",
+        "expression": "decimal(2.5, 0) = 2",
+        "description": "return n with given scale"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-floor(n)",
+        "expression": "floor(1.5) = 1",
+        "description": "return greatest integer <= n"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-floor(n)",
+        "expression": "floor(-1.5) = -2",
+        "description": "return greatest integer <= n"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-ceiling(n)",
+        "expression": "ceiling(1.5) = 2",
+        "description": "return smallest integer >= n"
+    },
+    {
+        "executionFlag": "yes",
+        "group": "semantics of numeric functions-ceiling(n)",
+        "expression": "ceiling(-1.5) = -1",
+        "description": "return smallest integer >= n"
+    }
+]

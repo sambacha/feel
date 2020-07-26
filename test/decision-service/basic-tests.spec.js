@@ -24,7 +24,7 @@ describe('additional decision table parsing logic...', () => {
     const values = Object.keys(jsonCsvObject).map(k => jsonCsvObject[k]);
     // console.log(jsonCsvObject)
     expect(values.length).to.equal(1);
-    // debugger;
+
     const result = DL._.makeContext(values[0]);
 
     expect(result.qn).to.equal('Customer Discount');
